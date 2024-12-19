@@ -26,7 +26,7 @@
                 </div>
 
                 <!-- Messages container -->
-                <div id="messages-container" class="mt-8 space-y-4 overflow-y-auto max-h-[calc(100vh-400px)]">
+                <div class="mt-8 space-y-4 overflow-y-auto max-h-[calc(100vh-400px)]">
                     <!-- AI Message -->
                     <div class="flex items-start space-x-4">
                         <div class="w-8 h-8 rounded-full bg-gradient-to-r from-indigo-600 to-purple-600 flex items-center justify-center text-white font-semibold shadow-md">
@@ -53,71 +53,15 @@
             <div class="bg-white rounded-lg shadow-lg p-4 border border-gray-200">
                 <div class="flex space-x-4">
                     <textarea 
-                        id="user-input"
                         class="flex-1 min-h-[100px] p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 resize-none bg-gray-50"
                         placeholder="Type your message here..."
                     ></textarea>
-                    <button 
-                        id="send-button"
-                        class="px-6 py-2 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-lg hover:from-indigo-700 hover:to-purple-700 transition-colors duration-200 h-fit shadow-md hover:shadow-lg active:shadow-sm">
+                    <button class="px-6 py-2 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-lg hover:from-indigo-700 hover:to-purple-700 transition-colors duration-200 h-fit shadow-md hover:shadow-lg active:shadow-sm">
                         Send
                     </button>
                 </div>
             </div>
         </div>
     </div>
-
-    <script>
-        document.getElementById('send-button').addEventListener('click', async () => {
-            const textarea = document.getElementById('user-input');
-            const message = textarea.value.trim();
-            
-            if (message) {
-                try {
-                    const response = await fetch('/textacc', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({ message: message })
-                    });
-
-                    if (response.ok) {
-                        // Add user message to chat
-                        const messagesContainer = document.getElementById('messages-container');
-                        const userMessageHTML = `
-                            <div class="flex items-start space-x-4 flex-row-reverse">
-                                <div class="w-8 h-8 rounded-full bg-gradient-to-r from-pink-500 to-rose-500 flex items-center justify-center text-white font-semibold shadow-md">
-                                    U
-                                </div>
-                                <div class="flex-1 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-lg p-4 shadow-sm">
-                                    <p class="text-white">${message}</p>
-                                </div>
-                            </div>
-                        `;
-                        messagesContainer.insertAdjacentHTML('beforeend', userMessageHTML);
-                        
-                        // Clear textarea
-                        textarea.value = '';
-                        
-                        // Scroll to bottom
-                        messagesContainer.scrollTop = messagesContainer.scrollHeight;
-                    } else {
-                        console.error('Failed to send message');
-                    }
-                } catch (error) {
-                    console.error('Error:', error);
-                }
-            }
-        });
-
-        // Allow sending with Enter key (Shift+Enter for new line)
-        document.getElementById('user-input').addEventListener('keydown', (e) => {
-            if (e.key === 'Enter' && !e.shiftKey) {
-                e.preventDefault();
-                document.getElementById('send-button').click();
-            }
-        });
-    </script>
 </body>
 </html>
